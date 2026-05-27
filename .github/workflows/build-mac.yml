@@ -1,0 +1,39 @@
+name: Build macOS App
+
+on: [push, workflow_dispatch]
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-state: '3.11'
+
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pyinstaller
+        # ถ้าสคริปต์ของคุณมีไลบรารีอื่น ให้พิมพ์ pip install เพิ่มตรงนี้ เช่น:
+        # pip install requests
+
+    - name: Build with PyInstaller
+      run: |
+        pyinstaller --onedir --windowed --name="noodle_app" stock_metrics.py
+        # แก้ตรง "MyMacApp" เป็นชื่อแอปที่ต้องการ และ your_script.py เป็นชื่อไฟล์ของคุณ
+
+    - name: Zip the App Bundle
+      run: |
+        cd dist
+        zip -r ../MyMacApp-macOS.zip MyMacApp.app
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: macOS-Application
+        path: MyMacApp-macOS.zip
