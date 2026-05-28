@@ -22,7 +22,7 @@ jobs:
 
     - name: Build with PyInstaller
       run: |
-        pyinstaller --onedir --windowed --name="noodle_app" stock_metrics.py
+        python pyinstaller --onedir --windowed --name="noodle_app" stock_metrics.py
         # แก้ตรง "noodle_app" เป็นชื่อแอปที่ต้องการ และ your_script.py เป็นชื่อไฟล์ของคุณ
 
     - name: Zip the App Bundle
